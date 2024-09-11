@@ -41,6 +41,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     isPlaying = !isPlaying;
   });
+
+  //rickRollingUser();
+
+  annoyingMessage();
+  fetchScores();
 });
 // END FOR FUN CODE
 
@@ -52,14 +57,49 @@ document.addEventListener("DOMContentLoaded", function () {
 // usuario a:
 // https://www.youtube.com/watch?v=dQw4w9WgXcQ
 
+function rickRollingUser() {
+  setTimeout(function () {
+    location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  }, 30000);
+}
+
 // 1 -  Cambiar el titulo de la pagina por cada un segundo.
 // "80' game 🎮 ", "insert 🪙 "  y "🥔 You won!"
+
+const titles = ["game 🎮 ", "insert 🪙 ", "🥔 You won!"];
+
+let currentIndex = 0;
+
+function updatePageTitle() {
+  document.title = titles[currentIndex];
+
+  currentIndex = (currentIndex + 1) % titles.length;
+
+  setTimeout(updatePageTitle, 1000);
+}
+
+// Inicializa el primer título
+updatePageTitle();
 
 // 2 - annoyingMessage() hacer una funcion que
 // cada 1 minuto aparezca un alert con el mensaje  "Get a Premium Account 🤩"
 
+function annoyingMessage() {
+  setInterval(() => {
+    alert("Get a Premium Account 🤩");
+  }, 100000);
+}
+
 // 4 - Hacer intermitente el mensaje de "Please, insert coin 🪙..."
 // tip: utilizar las clases de css fadeIn fadeOut
+
+setInterval(function () {
+  document.querySelector("p").style.display = "none";
+}, 1000);
+
+setInterval(function () {
+  document.querySelector("p").style.display = "block";
+}, 2000);
 
 // 5 - Implementar la funcion fetchScores()
 // traer los datos de la tabla de posiciones
@@ -67,5 +107,21 @@ document.addEventListener("DOMContentLoaded", function () {
 // server o de alguna fake api como mocki.io.
 // se provee de un db.json de ejemplo
 
+async function fetchScores() {
+  try {
+    const response = await fetch("http://localhost:3000/scores", {
+      method: "GET",
+    });
+
+    const result = await response.json();
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+setInterval(function () {
+  fetchScores();
+}, 2000);
 // 6 - Actualizar constantemente el scoreboard
 // de la pagina utilizando polling.
